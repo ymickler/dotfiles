@@ -17,7 +17,7 @@ alias ll="ls -la --color=auto"
 alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" && brew list --pinned'
 
 # Dotfiles
-alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias cm="chezmoi"
 
 
 # Functions
