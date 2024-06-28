@@ -1,0 +1,56 @@
+# Docker
+alias dcu="docker compose up -d"
+alias dps="docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}""
+alias dd="docker compose down"
+
+# Git
+alias gco="git checkout"
+alias gpl="git pull"
+alias gps"git push"
+alias gr="git rebase"
+alias gra"git rebase --abort"
+alias grc="git rebase --continue"
+
+# General
+alias ls='ls --color=auto'
+alias ll="ls -la --color=auto"
+alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" && brew list --pinned'
+
+# Dotfiles
+alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+
+# Functions
+function dwipe {
+  echo "Stopping and removing all containers"
+  # Alle Container stoppen und entfernen
+  containers=$(docker ps -aq)
+  if [ -n "$containers" ]; then
+    for container in $containers; do
+      docker stop $container >/dev/null 2>&1
+      docker rm $container >/dev/null 2>&1
+    done
+    echo "All containers stopped and removed."
+  else
+    echo "No containers to stop and remove."
+  fi
+
+  echo "Removing all stopped containers, networks, dangling images and build cache"
+  # Docker-Systembereinigung durchführen
+  docker system prune --force --volumes >/dev/null 2>&1
+  echo "Docker system cleaned."
+}
+
+function iwipe {
+  echo "Removing all images"
+	docker image prune -a -f
+}
+
+function dl {
+  local container_name=$1
+  docker logs -f --tail 10 "$container_name" | jq -c -R 'fromjson? | {timestamp: .t."$date", message: .msg}'
+}
+
+function pass() {
+    keepassxc-cli show -s -f Password /path/to/your/database.kdbx "$1"
+}
