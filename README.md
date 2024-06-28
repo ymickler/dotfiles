@@ -9,13 +9,8 @@ To set up these dotfiles on your system, follow these steps:
 1. **Install chezmoi** (if not already installed) using Homebrew:
    ```bash
    brew install chezmoi
-
-2. **Clone the repository:***
-   ```bash
-   git clone git@github.com:YannickMickler/dotfiles.git
-   cd dotfiles
    ```
-3. **Apply the dotfiles using chezmoi:***
+2. **Apply the dotfiles using chezmoi:***
    ```bash
    chezmoi init --apply YannickMickler
    ```
