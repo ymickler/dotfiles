@@ -19,7 +19,6 @@ alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" 
 # Dotfiles
 alias cm="chezmoi"
 
-
 # Functions
 function dwipe {
   echo "Stopping and removing all containers"
