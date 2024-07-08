@@ -1,0 +1,17 @@
+packages:
+  darwin:
+    brews:
+    - 'git'
+    - 'nvm'
+    casks:
+    - 'flameshot'
+    - 'visual-studio-code'
+    - 'brave-browser'
+    - 'obs'
+    - 'rectangle'
+    - 'scroll-reverser'
+    - 'alfred'
+    - 'warp'
+    - 'textmate'
+    - 'spotify'
+    - 'deepl'
