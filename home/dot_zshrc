@@ -6,7 +6,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="/opt/homebrew/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:$PATH"
 
 # Disable brew autoupdates
-HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Specify your defaults in this environment variable
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications --fontdir=/Library/Fonts"
