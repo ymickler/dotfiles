@@ -19,9 +19,13 @@ alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" 
 # Dotfiles
 alias cm="chezmoi"
 alias cmapply="chezmoi apply && source ~/.zshrc"
-alias cmedit="chezmoi edit ~/."
 
 # Functions
+
+function cmedit() {
+  chezmoi edit ~/."$1"
+}
+
 function dwipe {
   echo "Executing docker compose down"
   docker compose down --volumes
