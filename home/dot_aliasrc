@@ -21,6 +21,8 @@ alias cm="chezmoi"
 
 # Functions
 function dwipe {
+  echo "Executing docker compose down"
+  docker compose down --v
   echo "Stopping and removing all containers"
   # Alle Container stoppen und entfernen
   containers=$(docker ps -aq)
