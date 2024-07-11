@@ -20,5 +20,6 @@ export EDITOR="nvim"
 # Import alias
 [ -f $HOME/.aliasrc ] && source $HOME/.aliasrc
 
+export LANGUAGE=en_US:en
 
 eval "$(starship init zsh)"
