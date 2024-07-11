@@ -18,6 +18,7 @@ alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" 
 
 # Dotfiles
 alias cm="chezmoi"
+alias cma="chezmoi apply && source ~/.zshrc"
 
 # Functions
 function dwipe {
