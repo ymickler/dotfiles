@@ -11,7 +11,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 # Specify your defaults in this environment variable
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications --fontdir=/Library/Fonts"
 
-# Needed for legayc x86 container
+# Needed for legacy x86 container
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 # Set editor
@@ -20,6 +20,7 @@ export EDITOR="nvim"
 # Import alias
 [ -f $HOME/.aliasrc ] && source $HOME/.aliasrc
 
+# Others
 export LANGUAGE=en_US:en
 
 eval "$(starship init zsh)"
