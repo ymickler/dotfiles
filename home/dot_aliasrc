@@ -11,6 +11,8 @@ alias gps="git push"
 alias gr="git rebase"
 alias gra="git rebase --abort"
 alias grc="git rebase --continue"
+alias grm='branch=$(git branch --show-current) && git stash && git checkout master && git pull origin master && git checkout $branch && git rebase master && git stash pop'
+
 
 # General
 alias ls='ls --color=auto'
