@@ -3,6 +3,7 @@ packages:
     brews:
     - 'git'
     - 'nvm'
+    - 'neovim'
     casks:
     - 'flameshot'
     - 'visual-studio-code'
@@ -12,6 +13,9 @@ packages:
     - 'scroll-reverser'
     - 'alfred'
     - 'warp'
+    - 'starship'
     - 'textmate'
     - 'spotify'
     - 'deepl'
+    - 'rustdesk'
+    - 'bruno'

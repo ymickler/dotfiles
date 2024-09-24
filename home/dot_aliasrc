@@ -58,7 +58,8 @@ function iwipe {
 
 function dl {
   local container_name=$1
-  docker logs -f --tail 10 "$container_name" | jq -c -R 'fromjson? | {timestamp: .t."$date", message: .msg}'
+  local tail_lines=${2:-10}
+  docker logs -f --tail $tail_lines "$container_name" | jq -c -R 'fromjson? | {timestamp: .t."$date", message: .msg}'
 }
 
 function pass() {
