@@ -22,3 +22,5 @@
 	whitespace = red reverse
 [diff-so-fancy]
 	first-run = false
+[init]
+	defaultBranch = main
