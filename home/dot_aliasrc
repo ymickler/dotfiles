@@ -62,6 +62,12 @@ function dl {
   docker logs -f --tail $tail_lines "$container_name" | jq -c -R 'fromjson? | {timestamp: .t."$date", message: .msg}'
 }
 
+function dlp {
+  local container_name=$1
+  local tail_lines=${2:-10}
+  docker logs -f --tail $tail_lines "$container_name" | jq -r -R 'fromjson? | "\(.t."$date"): \(.msg)"'
+}
+
 function pass() {
     keepassxc-cli show -s -f Password /path/to/your/database.kdbx "$1"
 }
