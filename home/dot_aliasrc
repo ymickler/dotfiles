@@ -77,3 +77,10 @@ function dlp {
 function pass() {
   keepassxc-cli show -s -f Password /path/to/your/database.kdbx "$1"
 }
+
+# Get the effective docker compose config via compose file
+function dconf() {
+  local compose_file=${1:-'docker-compose.yml'}
+  docker compose --project-directory . -f "$compose_file" config
+}
+
