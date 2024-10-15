@@ -84,3 +84,7 @@ function dconf() {
   docker compose --project-directory . -f "$compose_file" config
 }
 
+# Validate all js files in the current project
+function nodec() {
+  node --check $(find . -name "*.js")
+}
