@@ -63,14 +63,15 @@ function iwipe {
 function dl {
   local container_name=$1
   local tail_lines=${2:-10}
-  docker logs -f --tail $tail_lines "$container_name" | jq -c -R 'fromjson? | {timestamp: .t."$date", message: .msg}'
+  docker logs --follow --tail=$tail_lines "$container_name" | jq -c -R 'fromjson?
+ | {timestamp: .isoTimestamp, message: .message}'
 }
 
 # Display Docker logs in plain text format
 function dlp {
   local container_name=$1
   local tail_lines=${2:-10}
-  docker logs -f --tail $tail_lines "$container_name" | jq -r -R 'fromjson? | "\(.t."$date"): \(.msg)"'
+  docker logs --follow --tail=$tail_lines "$container_name" | jq -R 'fromjson? | "\(.isoTimestamp): \(.message)"'
 }
 
 # Retrieve a password from a KeePassXC database
