@@ -4,6 +4,8 @@
 
 [push]
 	autoSetupRemote = true
+[pull]
+	rebase = true
 [core]
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
