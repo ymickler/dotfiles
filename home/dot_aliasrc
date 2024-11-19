@@ -60,21 +60,27 @@ function iwipe {
 }
 
 # Display Docker logs in JSON format
-function dl {
+function dlp {
   local container_name=$1
   local tail_lines=${2:-10}
   docker logs --follow --tail=$tail_lines $container_name | fx 'json => `\x1b[36m${new Date(json.timestamp).toLocaleTimeString("de-DE")}\x1b[0m | \x1b[32m${json.message}\x1b[0m${json.metadata ? ` | \x1b[33m${JSON.stringify(json.metadata)}\x1b[0m` : ""}`'
 }
 
 # Display Docker logs in plain text format
-function dlp {
+function dlr {
   local container_name=$1
-  local tail_lines=${2:-10}
+  local tail_lines=${2:-10} 
   docker logs --follow --tail=$tail_lines $container_name | fx 'json => ({
     timestamp: new Date(json.timestamp).toLocaleTimeString("de-DE"),
     message: json.message,
     ...(json.metadata && { metadata: json.metadata })
   })'
+}
+
+function dl {
+  local container_name=$1
+  local tail_lines=${2:-10}
+  docker logs --follow --tail=$tail_lines $container_name
 }
 
 # Retrieve a password from a KeePassXC database
