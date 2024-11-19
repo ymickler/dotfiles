@@ -77,7 +77,7 @@ function dlp {
 function dlr {
   local container_name=$1
   local tail_lines=${2:-10} 
-  docker logs --follow --tail=$tail_lines $container_name | fx 'json => ({
+  dl "$container_name" "$tail_lines" | fx 'json => ({
     timestamp: new Date(json.timestamp).toLocaleTimeString("de-DE"),
     message: json.message,
     ...(json.metadata && { metadata: json.metadata })
