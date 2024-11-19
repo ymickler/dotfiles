@@ -71,7 +71,11 @@ function dl {
 function dlp {
   local container_name=$1
   local tail_lines=${2:-10}
-  docker logs --follow --tail=$tail_lines "$container_name" | jq -R 'fromjson? | "\(.isoTimestamp): \(.message)"'
+  docker logs --follow --tail=$tail_lines $container_name | fx 'json => ({
+    timestamp: new Date(json.timestamp).toLocaleTimeString("de-DE"),
+    message: json.message,
+    ...(json.metadata && { metadata: json.metadata })
+  })'
 }
 
 # Retrieve a password from a KeePassXC database
