@@ -23,6 +23,9 @@ alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" 
 alias cm="chezmoi"
 alias cmapply="chezmoi apply && source ~/.zshrc"
 
+# Kubectl
+aias k="kubectl"
+
 # Functions
 
 # Edit a file managed by chezmoi
