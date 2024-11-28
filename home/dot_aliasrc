@@ -24,7 +24,7 @@ alias cm="chezmoi"
 alias cmapply="chezmoi apply && source ~/.zshrc"
 
 # Kubectl
-aias k="kubectl"
+alias k="kubectl"
 
 # Functions
 
