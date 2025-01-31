@@ -23,8 +23,13 @@ alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" 
 alias cm="chezmoi"
 alias cmapply="chezmoi apply && source ~/.zshrc"
 
+# local AI
+alias oldb="ollama run deepseek-r1:70b"
+alias olds="ollama run deepseek-r1:7b"
+alias ols="ollama serve"
+
 # Kubectl
-alias k="kubectl"
+alias kc="kubectl"
 
 # Functions
 
