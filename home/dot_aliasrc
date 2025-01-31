@@ -27,6 +27,7 @@ alias cmapply="chezmoi apply && source ~/.zshrc"
 alias oldb="ollama run deepseek-r1:70b"
 alias olds="ollama run deepseek-r1:7b"
 alias ols="ollama serve"
+alias olui="docker start open-webui"
 
 # Kubectl
 alias kc="kubectl"
