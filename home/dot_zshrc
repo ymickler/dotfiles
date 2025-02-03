@@ -25,4 +25,7 @@ export LANGUAGE=en_US:en
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 
+# Configure kind (kubernetes)
+export KIND_EXPERIMENTAL_PROVIDER=podman
+
 eval "$(starship init zsh)"
