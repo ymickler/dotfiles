@@ -31,10 +31,9 @@ alias olds="ollama run deepseek-r1:7b"
 alias ols="ollama serve"
 
 # Github Copilot
-alias ??='gh copilot suggest' # Ask for a generic shell command
-alias git?='gh copilot suggest --type git' # Ask for a git command
-alias gh?='gh copilot suggest --type gh' # Ask for a GitHub CLI command
-
+alias cop='gh copilot suggest' # Ask for a generic shell command
+alias gitcop='gh copilot suggest --type git' # Ask for a git command
+alias ghcop='gh copilot suggest --type gh' # Ask for a GitHub CLI command
 
 # Kubectl
 alias kc="kubectl"
