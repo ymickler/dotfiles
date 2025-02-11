@@ -1,10 +1,10 @@
 # Docker
-alias docker=podman
-alias docker-compose="podman compose"
-alias dcu="podman compose up -d"
-alias dps="podman ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}""
-alias dd="podman compose down"
-alias vwipe="podman volume rm $(docker volume ls -q)"
+#alias docker=podman
+#alias docker-compose="podman compose"
+alias dcu="docker compose up -d"
+alias dps="docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}""
+alias dd="docker compose down"
+alias vwipe="docker volume rm $(docker volume ls -q)"
 
 # Git
 alias gco="git checkout"
