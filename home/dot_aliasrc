@@ -40,6 +40,13 @@ alias kc="kubectl"
 
 ## Functions
 
+# Function to find files with extensions and copy to clipboard
+function copy_filenames() {
+    local path="${1:-.}"
+    find "$path" -type f -name '*.*' -print | xclip -selection clipboard
+    echo "Filenames with extensions have been copied to the clipboard."
+}
+
 # Start ollama open web ui
 function olui {
   echo "Ollama Webui starts with port: 9783"
