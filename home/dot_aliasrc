@@ -37,6 +37,7 @@ alias ghcop='gh copilot suggest --type gh' # Ask for a GitHub CLI command
 
 # Kubectl
 alias kc="kubectl"
+alias kh="kubehelp"
 
 ## Functions
 
@@ -128,3 +129,29 @@ function dconf() {
 function nodec() {
   node --check $(find . -name "*.js")
 }
+
+# Print out important kubectl commands
+kubehelp() {
+  echo "### Important kubectl Commands"
+  echo ""
+  echo "**Listing Resources:**"
+  echo "- `kubectl get pods`: List all pods in the current namespace."
+  echo "- `kubectl get pods --all-namespaces`: List all pods across all namespaces."
+  echo "- `kubectl get svc`: List all services in the current namespace."
+  echo "- `kubectl get deployments`: List all deployments in the current namespace."
+  echo ""
+  echo "**Creating and Deleting Resources:**"
+  echo "- `kubectl create deployment <name> --image=<image>`: Create a new deployment."
+  echo "- `kubectl delete pod <pod_name>`: Delete a specific pod."
+  echo ""
+  echo "**Describing and Debugging Resources:**"
+  echo "- `kubectl describe pod <pod_name>`: Show detailed information about a pod."
+  echo "- `kubectl logs <pod_name>`: Show logs of a pod."
+  echo "- `kubectl exec -it <pod_name> -- /bin/bash`: Open an interactive shell in a running pod."
+  echo ""
+  echo "**Scaling and Rolling Back Deployments:**"
+  echo "- `kubectl scale deployment <deployment_name> --replicas=<number>`: Scale a deployment."
+  echo "- `kubectl rollout status deployment/<deployment_name>`: Check the status of a rollout."
+  echo "- `kubectl rollout undo deployment/<deployment_name>`: Roll back a deployment to the previous version."
+}
+
