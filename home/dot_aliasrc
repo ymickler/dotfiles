@@ -20,6 +20,7 @@ alias grm='branch=$(git branch --show-current) && git stash && git checkout mast
 alias ls='ls --color=auto'
 alias ll="ls -la --color=auto"
 alias brewu='brew update && brew upgrade && echo "Pinned package not upgraded:" && brew list --pinned'
+alias code="code-insiders"
 
 # Dotfiles
 alias cm="chezmoi"
