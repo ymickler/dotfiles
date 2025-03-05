@@ -42,6 +42,11 @@ alias kh="kubehelp"
 
 ## Functions
 
+# Import SaaS Functions
+if [ -f "$HOME/.saasrc" ]; then
+  . "$HOME/.saasrc"
+fi
+
 # Function to find files with extensions and copy to clipboard
 function copy_filenames() {
     local path="${1}"
