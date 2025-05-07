@@ -15,6 +15,8 @@ alias gra="git rebase --abort"
 alias grc="git rebase --continue"
 alias grm='branch=$(git branch --show-current) && git stash && git checkout master && git pull origin master && git checkout $branch && git rebase master && git stash pop'
 
+# Github cli commands
+alias ghrv="gh repo view --web"
 
 # General
 alias ls='ls --color=auto'
