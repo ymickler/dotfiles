@@ -21,7 +21,7 @@ alias ghrv="gh repo view --web"
 # General
 alias ls='ls --color=auto'
 alias ll="ls -la --color=auto"
-alias brewu='brew update && brew upgrade --cask $(brew list --cask | grep -v -E 'font-3270-nerd-font|font-fira-code-nerd-font|logi-options+|tunnelblick') && echo "Pinned package not upgraded:" && brew list --pinned'
+alias brewu="brew update && brew upgrade --cask \$(brew list --cask | grep -v -E 'font-3270-nerd-font|font-fira-code-nerd-font|logi-options\\+|tunnelblick') && echo \"Pinned package not upgraded:\" && brew list --pinned"
 alias code="code-insiders"
 
 # Dotfiles
