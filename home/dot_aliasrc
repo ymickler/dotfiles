@@ -21,7 +21,7 @@ alias ghrv="gh repo view --web"
 # General
 alias ls='ls --color=auto'
 alias ll="ls -la --color=auto"
-alias brewu="brew update && brew upgrade --cask \$(brew list --cask | grep -v -E 'font-3270-nerd-font|font-fira-code-nerd-font|logi-options\\+|tunnelblick') && echo \"Pinned package not upgraded:\" && brew list --pinned"
+#alias brewu="brew update && brew upgrade --cask \$(brew list --cask | grep -v -E 'font-3270-nerd-font|font-fira-code-nerd-font|logi-options\\+|tunnelblick') && echo \"Pinned package not upgraded:\" && brew list --pinned"
 alias code="code-insiders"
 
 # Dotfiles
@@ -41,6 +41,16 @@ alias ghcop='gh copilot suggest --type gh' # Ask for a GitHub CLI command
 # Kubectl
 alias kc="kubectl"
 alias kh="kubehelp"
+
+
+## Exports
+
+export BREW_EXCLUDES=(
+  font-3270-nerd-font
+  font-fira-code-nerd-font
+  logi-options+
+  tunnelblick
+)
 
 ## Functions
 
@@ -161,5 +171,16 @@ kubehelp() {
   echo "- `kubectl scale deployment <deployment_name> --replicas=<number>`: Scale a deployment."
   echo "- `kubectl rollout status deployment/<deployment_name>`: Check the status of a rollout."
   echo "- `kubectl rollout undo deployment/<deployment_name>`: Roll back a deployment to the previous version."
+}
+
+# Updates brew with exclude list
+brewu() {
+  local excludes_pattern
+  excludes_pattern=$(printf '%s\n' "${BREW_EXCLUDES[@]}" | grep -v '^#' | tr '\n' '\0' | xargs -0 -n1 echo -e | sed 's/^/-e /' | tr '\n' ' ')
+
+  brew update
+  brew upgrade --cask $(brew list --cask | grep -v -F ${excludes_pattern})
+  echo "Pinned package not upgraded:"
+  brew list --pinned
 }
 
