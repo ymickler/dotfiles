@@ -1,44 +1,87 @@
 # Docker
 #alias docker=podman
 #alias docker-compose="podman compose"
+
+# Start docker compose in detached mode
 alias dcu="docker compose up -d"
-alias dps="docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}""
+
+# Show running docker containers in table format
+alias dps="docker ps --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\""
+
+# Stop and remove docker compose services
 alias dd="docker compose down"
+
+# Remove all docker volumes
 alias vwipe="docker volume rm $(docker volume ls -q)"
 
-# Git
+## Git
+# Checkout a branch
 alias gco="git checkout"
+
+# Pull latest changes from remote
 alias gpl="git pull"
+
+# Push local changes to remote
 alias gps="git push"
+
+# Start a rebase
 alias gr="git rebase"
+
+# Abort a rebase
 alias gra="git rebase --abort"
+
+# Continue a rebase after conflict resolution
 alias grc="git rebase --continue"
+
+# Rebase current branch onto updated master
 alias grm='branch=$(git branch --show-current) && git stash && git checkout master && git pull origin master && git checkout $branch && git rebase master && git stash pop'
 
-# Github cli commands
+## GitHub CLI
+# Open the current GitHub repo in the browser
 alias ghrv="gh repo view --web"
 
-# General
+## General
+# Colored ls
 alias ls='ls --color=auto'
+
+# Long listing with color
 alias ll="ls -la --color=auto"
+
+# Use VS Code Insiders as default editor
 alias code="code-insiders"
 
-# Dotfiles
+## Dotfiles
+# Run chezmoi
 alias cm="chezmoi"
+
+# Apply chezmoi changes and reload shell
 alias cmapply="chezmoi apply && source ~/.zshrc"
 
-# local AI
+## Local AI
+# Run DeepSeek 70B model
 alias oldb="ollama run deepseek-r1:70b"
+
+# Run DeepSeek 7B model
 alias olds="ollama run deepseek-r1:7b"
+
+# Start Ollama server
 alias ols="ollama serve"
 
-# Github Copilot
-alias cop='gh copilot suggest' # Ask for a generic shell command
-alias gitcop='gh copilot suggest --type git' # Ask for a git command
-alias ghcop='gh copilot suggest --type gh' # Ask for a GitHub CLI command
+## GitHub Copilot
+# Ask Copilot for a generic shell command
+alias cop='gh copilot suggest'
 
-# Kubectl
+# Ask Copilot for a git command
+alias gitcop='gh copilot suggest --type git'
+
+# Ask Copilot for a GitHub CLI command
+alias ghcop='gh copilot suggest --type gh'
+
+## Kubectl
+# Shortcut for kubectl
 alias kc="kubectl"
+
+# Show kubectl help commands
 alias kh="kubehelp"
 
 
