@@ -229,6 +229,9 @@ kubehelp() {
 
 # Updates brew and package with filtered packages
 brewu() {
+
+  trap 'echo ""; echo "❌ Cannceled."; exit 1' INT
+
   local exclude_pattern=""
   for pkg in "${BREW_EXCLUDES[@]}"; do
     escaped_pkg=$(printf '%s\n' "$pkg" | sed -e 's/[][\.^$*+?{}|]/\\&/g')
