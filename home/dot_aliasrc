@@ -218,3 +218,78 @@ brewu() {
 
   brew list --pinned
 }
+
+
+aliasdocs() {
+  local file="${1:-$HOME/.aliasrc}"
+  local last_comment=""
+  local line=""
+  local inside_array=0
+  local var_name=""
+
+  echo "🔍 Scanning: $file"
+  echo ""
+
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    # Match comment that starts with "# "
+    if [[ "$line" == "# "* ]]; then
+      last_comment="${line#"# "}"
+      continue
+    fi
+
+    # Skip empty lines
+    [[ -z "$line" ]] && continue
+
+    # Match start of export array (multiline): export VAR=(
+    if [[ "$line" == export*'=(' ]]; then
+      inside_array=1
+      var_name="${line%%=*}"
+      var_name="${var_name##* }"
+      [[ -n "$last_comment" ]] && echo "📦 export '${var_name}' → $last_comment"
+      last_comment=""
+      continue
+    fi
+
+    # Detect array closing line
+    if [[ $inside_array -eq 1 && "$line" == *")" ]]; then
+      inside_array=0
+      continue
+    fi
+
+    # Skip lines inside array
+    if [[ $inside_array -eq 1 ]]; then
+      continue
+    fi
+
+    # Match alias
+    if [[ "$line" == alias\ * ]]; then
+      local alias_name="${line#alias }"
+      alias_name="${alias_name%%=*}"
+      [[ -n "$last_comment" ]] && echo "🔗 alias '${alias_name}' → $last_comment"
+      last_comment=""
+      continue
+    fi
+
+    # Match export or assignment
+    if [[ "$line" == export\ *"="* || "$line" == [a-zA-Z_]*"="* ]]; then
+      local var="${line%%=*}"
+      var="${var##* }"
+      [[ -n "$last_comment" ]] && echo "📦 variable '${var}' → $last_comment"
+      last_comment=""
+      continue
+    fi
+
+    # Match function definitions: name() { or function name {
+    if [[ "$line" == function\ * || "$line" == *"() {" ]]; then
+      local func="${line%%\(*}"
+      func="${func##* }"
+      [[ -n "$last_comment" ]] && echo "🔧 function '${func}()' → $last_comment"
+      last_comment=""
+      continue
+    fi
+
+    # Reset comment if not followed by relevant definition
+    last_comment=""
+  done < "$file"
+}
+
