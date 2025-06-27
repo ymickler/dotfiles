@@ -229,8 +229,7 @@ kubehelp() {
 
 # Updates brew and package with filtered packages
 brewu() {
-
-  trap 'echo ""; echo "❌ Cannceled."; exit 1' INT
+  trap 'echo ""; echo "❌ Canceled."; exit 1' INT
 
   local exclude_pattern=""
   for pkg in "${BREW_EXCLUDES[@]}"; do
@@ -238,7 +237,15 @@ brewu() {
     exclude_pattern+="${exclude_pattern:+|}$escaped_pkg"
   done
 
-  brew update || echo "⚠️ brew update fehlgeschlagen (ggf. temporär)"
+  echo ""
+  echo "⛔ These Casks are excluded from upgrade:"
+  for cask in "${BREW_EXCLUDES[@]}"; do
+    echo "  - $cask"
+  done
+
+  echo ""
+  echo "🔄 Running brew update..."
+  brew update || echo "⚠️ brew update failed (possibly temporary)"
 
   local all_casks
   all_casks=($(brew list --cask))
@@ -251,17 +258,18 @@ brewu() {
   done
 
   if [[ ${#upgradable_casks[@]} -eq 0 ]]; then
-    echo "ℹ️ Keine Casks zu upgraden."
+    echo "ℹ️ No casks to upgrade."
   else
+    echo ""
+    echo "⬆️ Upgrading the following Casks:"
+    for cask in "${upgradable_casks[@]}"; do
+      echo "  - $cask"
+    done
     brew upgrade --cask "${upgradable_casks[@]}"
   fi
 
   echo ""
-  echo "⛔ Diese Casks wurden **nicht** geupdatet:"
-  for cask in "${BREW_EXCLUDES[@]}"; do
-    echo "  - $cask"
-  done
-
+  echo "📌 Pinned packages:"
   brew list --pinned
 }
 
