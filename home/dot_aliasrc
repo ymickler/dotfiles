@@ -288,7 +288,7 @@ aliasdocs() {
       inside_array=1
       var_name="${line%%=*}"
       var_name="${var_name##* }"
-      [[ -n "$last_comment" ]] && echo "📦 export '${var_name}' → $last_comment"
+      [[ -n "$last_comment" ]] && echo "📦 ${var_name} → $last_comment"
       last_comment=""
       continue
     fi
@@ -308,16 +308,16 @@ aliasdocs() {
     if [[ "$line" == alias\ * ]]; then
       local alias_name="${line#alias }"
       alias_name="${alias_name%%=*}"
-      [[ -n "$last_comment" ]] && echo "🔗 alias '${alias_name}' → $last_comment"
+      [[ -n "$last_comment" ]] && echo "🔗 ${alias_name} → $last_comment"
       last_comment=""
       continue
     fi
 
-    # Match export or assignment
+    # Match export or assignment (non-array)
     if [[ "$line" == export\ *"="* || "$line" == [a-zA-Z_]*"="* ]]; then
       local var="${line%%=*}"
       var="${var##* }"
-      [[ -n "$last_comment" ]] && echo "📦 variable '${var}' → $last_comment"
+      [[ -n "$last_comment" ]] && echo "📦 ${var} → $last_comment"
       last_comment=""
       continue
     fi
@@ -326,13 +326,14 @@ aliasdocs() {
     if [[ "$line" == function\ * || "$line" == *"() {" ]]; then
       local func="${line%%\(*}"
       func="${func##* }"
-      [[ -n "$last_comment" ]] && echo "🔧 function '${func}()' → $last_comment"
+      [[ -n "$last_comment" ]] && echo "🔧 ${func}() → $last_comment"
       last_comment=""
       continue
     fi
 
-    # Reset comment if not followed by relevant definition
+    # Reset comment if line is unrelated
     last_comment=""
   done < "$file"
 }
+
 
