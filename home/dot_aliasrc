@@ -21,7 +21,6 @@ alias ghrv="gh repo view --web"
 # General
 alias ls='ls --color=auto'
 alias ll="ls -la --color=auto"
-#alias brewu="brew update && brew upgrade --cask \$(brew list --cask | grep -v -E 'font-3270-nerd-font|font-fira-code-nerd-font|logi-options\\+|tunnelblick') && echo \"Pinned package not upgraded:\" && brew list --pinned"
 alias code="code-insiders"
 
 # Dotfiles
@@ -45,11 +44,22 @@ alias kh="kubehelp"
 
 ## Exports
 
+# Export list for filtered homebrew packages
 export BREW_EXCLUDES=(
   font-3270-nerd-font
   font-fira-code-nerd-font
+  logi-options-plus
   logi-options+
   tunnelblick
+  cursor
+  podman-desktop
+  blackhole-16ch
+  cbeaver-community
+  iterm2
+  openvpn-connect
+  raindropio
+  slack
+  visual-studio-code
 )
 
 ## Functions
@@ -174,13 +184,38 @@ kubehelp() {
 }
 
 # Updates brew with exclude list
-brewu() {
-  local excludes_pattern
-  excludes_pattern=$(printf '%s\n' "${BREW_EXCLUDES[@]}" | grep -v '^#' | tr '\n' '\0' | xargs -0 -n1 echo -e | sed 's/^/-e /' | tr '\n' ' ')
 
-  brew update
-  brew upgrade --cask $(brew list --cask | grep -v -F ${excludes_pattern})
-  echo "Pinned package not upgraded:"
+# Funktion: brew update & upgrade ohne bestimmte Casks
+brewu() {
+  local exclude_pattern=""
+  for pkg in "${BREW_EXCLUDES[@]}"; do
+    escaped_pkg=$(printf '%s\n' "$pkg" | sed -e 's/[][\.^$*+?{}|]/\\&/g')
+    exclude_pattern+="${exclude_pattern:+|}$escaped_pkg"
+  done
+
+  brew update || echo "⚠️ brew update fehlgeschlagen (ggf. temporär)"
+
+  local all_casks
+  all_casks=($(brew list --cask))
+
+  local upgradable_casks=()
+  for cask in "${all_casks[@]}"; do
+    if ! printf '%s\n' "$cask" | grep -E -q "$exclude_pattern"; then
+      upgradable_casks+=("$cask")
+    fi
+  done
+
+  if [[ ${#upgradable_casks[@]} -eq 0 ]]; then
+    echo "ℹ️ Keine Casks zu upgraden."
+  else
+    brew upgrade --cask "${upgradable_casks[@]}"
+  fi
+
+  echo ""
+  echo "⛔ Diese Casks wurden **nicht** geupdatet:"
+  for cask in "${BREW_EXCLUDES[@]}"; do
+    echo "  - $cask"
+  done
+
   brew list --pinned
 }
-
