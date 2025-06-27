@@ -229,50 +229,66 @@ kubehelp() {
 
 # Updates brew and package with filtered packages
 brewu() {
-  trap 'echo ""; echo "❌ Canceled."; exit 1' INT
+  trap 'echo ""; echo "❌ Cancelled."; exit 1' INT
 
-  local exclude_pattern=""
-  for pkg in "${BREW_EXCLUDES[@]}"; do
-    escaped_pkg=$(printf '%s\n' "$pkg" | sed -e 's/[][\.^$*+?{}|]/\\&/g')
-    exclude_pattern+="${exclude_pattern:+|}$escaped_pkg"
-  done
+  echo "🔄 Step 1: brew update"
+  brew update || echo "⚠️ brew update failed"
 
-  echo ""
-  echo "⛔ These Casks are excluded from upgrade:"
-  for cask in "${BREW_EXCLUDES[@]}"; do
-    echo "  - $cask"
-  done
+  echo "🔄 Step 2: collect outdated casks"
+  local outdated_casks
+  outdated_casks=($(brew outdated --cask --greedy --quiet))
 
-  echo ""
-  echo "🔄 Running brew update..."
-  brew update || echo "⚠️ brew update failed (possibly temporary)"
+  if [[ ${#outdated_casks[@]} -eq 0 ]]; then
+    echo "ℹ️ No casks are outdated."
+    return
+  fi
 
-  local all_casks
-  all_casks=($(brew list --cask))
-
-  local upgradable_casks=()
-  for cask in "${all_casks[@]}"; do
-    if ! printf '%s\n' "$cask" | grep -E -q "$exclude_pattern"; then
-      upgradable_casks+=("$cask")
+  echo "🔄 Step 3: apply exclusion list"
+  local to_upgrade=()
+  local skipped_casks=()
+  for cask in "${outdated_casks[@]}"; do
+    local skip=0
+    for ex in "${BREW_EXCLUDES[@]}"; do
+      if [[ "$cask" == "$ex" ]]; then
+        skip=1
+        break
+      fi
+    done
+    if (( skip )); then
+      skipped_casks+=("$cask")
+    else
+      to_upgrade+=("$cask")
     fi
   done
 
-  if [[ ${#upgradable_casks[@]} -eq 0 ]]; then
-    echo "ℹ️ No casks to upgrade."
-  else
+  if [[ ${#skipped_casks[@]} -gt 0 ]]; then
     echo ""
-    echo "⬆️ Upgrading the following Casks:"
-    for cask in "${upgradable_casks[@]}"; do
-      echo "  - $cask"
-    done
-    brew upgrade --cask "${upgradable_casks[@]}"
+    echo "⛔ Skipped casks (excluded & outdated):"
+    for c in "${skipped_casks[@]}"; do echo "  - $c"; done
   fi
 
   echo ""
-  echo "📌 Pinned packages:"
+  echo "⛔ All excluded casks (regardless of outdated):"
+  for c in "${BREW_EXCLUDES[@]}"; do echo "  - $c"; done
+
+  if [[ ${#to_upgrade[@]} -eq 0 ]]; then
+    echo ""
+    echo "ℹ️ No casks to upgrade after applying exclusions."
+  elif [[ ${#to_upgrade[@]} -eq ${#outdated_casks[@]} ]]; then
+    echo ""
+    echo "⬆️ All outdated casks are upgradable. Using default brew upgrade for colored output:"
+    brew upgrade --cask
+  else
+    echo ""
+    echo "⬆️ Upgrading selected casks (no color output):"
+    for c in "${to_upgrade[@]}"; do echo "  - $c"; done
+    brew upgrade --cask "${to_upgrade[@]}"
+  fi
+
+  echo ""
+  echo "📌 Pinned formulae:"
   brew list --pinned
 }
-
 
 aliasdocs() {
   local file="${1:-$HOME/.aliasrc}"
