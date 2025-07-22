@@ -77,6 +77,10 @@ alias gitcop='gh copilot suggest --type git'
 # Ask Copilot for a GitHub CLI command
 alias ghcop='gh copilot suggest --type gh'
 
+# Connect ssh to dev local runner
+alias lrd='ssh yannick.mickler@er-dev-saas-01.sealsystems.local'
+alias lrp='ssh yannick.mickler@er-prd-saas-01.sealsystems.local'
+
 ## Kubectl
 # Shortcut for kubectl
 alias kc="kubectl"
