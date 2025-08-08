@@ -12,7 +12,7 @@ alias dps="docker ps --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\""
 alias dd="docker compose down"
 
 # Remove all docker volumes
-alias vwipe="docker volume rm $(docker volume ls -q)"
+alias vwipe='docker volume rm $(docker volume ls -q)'
 
 ## Git
 # Checkout a branch
@@ -34,7 +34,7 @@ alias gra="git rebase --abort"
 alias grc="git rebase --continue"
 
 # Push branch and open Pull Request in browser
-alias ghpr="git push -u origin $(git branch --show-current) && gh pr create --fill --web"
+alias ghpr='git push -u origin $(git branch --show-current) && gh pr create --fill --web'
 
 # Rebase current branch onto updated master
 alias grm='branch=$(git branch --show-current) && git stash && git checkout master && git pull origin master && git checkout $branch && git rebase master && git stash pop'
