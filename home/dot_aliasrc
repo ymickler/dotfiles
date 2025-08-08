@@ -250,12 +250,16 @@ brewu() {
     return
   fi
 
+  # HINZUGEFÜGT: Kombiniert die statische Ausschlussliste mit den als Argumente übergebenen Paketen.
+  local all_excludes=("${BREW_EXCLUDES[@]}" "$@")
+
   echo "🔄 Step 3: apply exclusion list"
   local to_upgrade=()
   local skipped_casks=()
   for cask in "${outdated_casks[@]}"; do
     local skip=0
-    for ex in "${BREW_EXCLUDES[@]}"; do
+    # GEÄNDERT: Prüft jetzt gegen die kombinierte Ausschlussliste 'all_excludes'.
+    for ex in "${all_excludes[@]}"; do
       if [[ "$cask" == "$ex" ]]; then
         skip=1
         break
@@ -275,8 +279,9 @@ brewu() {
   fi
 
   echo ""
-  echo "⛔ All excluded casks (regardless of outdated):"
-  for c in "${BREW_EXCLUDES[@]}"; do echo "  - $c"; done
+  # GEÄNDERT: Zeigt alle Ausschlüsse an, die für diesen Lauf gelten.
+  echo "⛔ All active exclusions for this run:"
+  for c in "${all_excludes[@]}"; do echo "  - $c"; done
 
   if [[ ${#to_upgrade[@]} -eq 0 ]]; then
     echo ""
