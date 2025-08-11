@@ -233,10 +233,17 @@ kubehelp() {
   echo "- `kubectl rollout undo deployment/<deployment_name>`: Roll back a deployment to the previous version."
 }
 
-
 # Updates brew and package with filtered packages
 brewu() {
   trap 'echo ""; echo "❌ Cancelled."; exit 1' INT
+
+  # NEU: Prüft auf ein Flag, um die vordefinierte Ausschlussliste zu ignorieren
+  local ignore_predefined_excludes=0
+  if [[ "$1" == "--ignore" || "$1" == "-i" ]]; then
+    ignore_predefined_excludes=1
+    shift # Entfernt das --ignore/-i Flag von den Argumenten
+    echo "ℹ️ The predefined BREW_EXCLUDES list will be ignored for this run."
+  fi
 
   echo "🔄 Step 1: brew update"
   brew update || echo "⚠️ brew update failed"
@@ -250,15 +257,20 @@ brewu() {
     return
   fi
 
-  # HINZUGEFÜGT: Kombiniert die statische Ausschlussliste mit den als Argumente übergebenen Paketen.
-  local all_excludes=("${BREW_EXCLUDES[@]}" "$@")
+  # GEÄNDERT: Baut die Ausschlussliste basierend auf dem Flag auf
+  local all_excludes=()
+  if (( ! ignore_predefined_excludes )); then
+    # Füge die vordefinierte Liste nur hinzu, wenn das Flag nicht gesetzt ist
+    all_excludes+=("${BREW_EXCLUDES[@]}")
+  fi
+  # Die als Argumente übergebenen Pakete werden immer hinzugefügt
+  all_excludes+=("$@")
 
   echo "🔄 Step 3: apply exclusion list"
   local to_upgrade=()
   local skipped_casks=()
   for cask in "${outdated_casks[@]}"; do
     local skip=0
-    # GEÄNDERT: Prüft jetzt gegen die kombinierte Ausschlussliste 'all_excludes'.
     for ex in "${all_excludes[@]}"; do
       if [[ "$cask" == "$ex" ]]; then
         skip=1
@@ -278,10 +290,12 @@ brewu() {
     for c in "${skipped_casks[@]}"; do echo "  - $c"; done
   fi
 
-  echo ""
-  # GEÄNDERT: Zeigt alle Ausschlüsse an, die für diesen Lauf gelten.
-  echo "⛔ All active exclusions for this run:"
-  for c in "${all_excludes[@]}"; do echo "  - $c"; done
+  # Zeigt nur dann eine Liste der aktiven Ausschlüsse an, wenn welche vorhanden sind
+  if [[ ${#all_excludes[@]} -gt 0 ]]; then
+    echo ""
+    echo "⛔ All active exclusions for this run:"
+    for c in "${all_excludes[@]}"; do echo "  - $c"; done
+  fi
 
   if [[ ${#to_upgrade[@]} -eq 0 ]]; then
     echo ""
